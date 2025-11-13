@@ -1,0 +1,27 @@
+// .vscode/launch.json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "cwd": "${workspaceRoot}",
+      "executable": "./build/test.elf",        // 👈【必须匹配】CMake 生成的 ELF 文件路径
+      "name": "Debug with OpenOCD",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "openocd",
+      "configFiles": [
+        "interface/cmsis-dap.cfg",             // 👈【可选】调试器类型（如 stlink-v2.cfg、jlink.cfg）
+        "target/stm32f1x.cfg"                  // 👈【必须修改】目标芯片配置（如 stm32f4x.cfg）
+      ],
+
+      "serverpath": "D:/software/openocd-0.12.0-7/bin/openocd.exe",  // 👈【必须修改】OpenOCD 可执行文件路径
+      "searchDir": [
+        "D:/software/openocd-0.12.0-7/openocd/scripts"               // 👈【必须修改】OpenOCD 脚本目录路径
+      ],
+      "runToEntryPoint": "main",               // 👈【可选】启动后停在 main()；可改为其他函数或删掉
+      "showDevDebugOutput": "none",            // 👈【可选】调试输出级别（"none" / "parsed" / "raw"）
+      "gdbPath": "D:/software/armgcc/bin/arm-none-eabi-gdb.exe",     // 👈【必须修改】ARM GCC 工具链中 GDB 路径
+      "svdFile": "STM32F103xx.svd"             // 👈【可选但推荐】SVD 文件路径（需放在项目中或指定绝对路径）
+    }
+  ]
+}

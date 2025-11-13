@@ -1,0 +1,86 @@
+// .vscode/tasks.json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Clean Build",
+      "type": "shell",
+      "command": "if exist \"build\" rmdir /s /q build",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/c"]
+        }
+      },
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Remove the build directory"
+    },
+    {
+      "label": "CMake Configure",
+      "type": "shell",
+      "command": "if not exist \"build\" mkdir build && cd build && cmake -G \"MinGW Makefiles\" ..",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/c"]
+        }
+      },
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Configure project with MinGW Makefiles"
+    },
+    {
+      "label": "Build Project",
+      "type": "shell",
+      "command": "make",
+      "args": ["-j15"], // 👈【可配置】编译并行线程数，建议设为 CPU 核心数（如 -j8, -j16）
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "dependsOn": "CMake Configure",
+      "group": "build",
+      "problemMatcher": "$gcc",
+      "detail": "Compile the project"
+    },
+    {
+      "label": "Flash STM32",
+      "type": "process",
+      "command": "D:/software/openocd-0.12.0-7/bin/openocd.exe", // 👈【必须修改】OpenOCD 安装路径
+      "args": [
+        "-s", "D:/software/openocd-0.12.0-7/openocd/scripts",   // 👈【必须修改】OpenOCD 脚本目录
+        "-f", "interface/cmsis-dap.cfg",                         // 👈【可选】调试器类型（如 stlink-v2.cfg）
+        "-f", "target/stm32f1x.cfg",                             // 👈【必须修改】目标芯片配置（如 stm32f4x.cfg）
+        "-c", "program test.hex verify reset exit"               // 👈【可选】烧录文件名（hex/elf原生支持，若生成的是 .bin，需改命令）
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/build"
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Flash",
+      "dependsOn": ["Build Project", "Flash STM32"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Full build and flash cycle"
+    },
+    {
+      "label": "Rebuild & Flash",
+      "dependsOn": ["Clean Build", "Build Project", "Flash STM32"],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "problemMatcher": [],
+      "detail": "Clean, rebuild, and flash to STM32"
+    }
+  ]
+}

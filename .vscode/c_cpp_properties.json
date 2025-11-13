@@ -1,0 +1,23 @@
+// .vscode/c_cpp_properties.json
+{
+  "configurations": [
+    {
+      "name": "armgcc",
+      "includePath": [
+        "${workspaceFolder}/**"   // 👈【通常无需改】自动包含项目所有头文件
+      ],
+      "defines": [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE",
+        "USE_HAL_DRIVER",         // 👈【按项目需求】使用 STM32 HAL 库
+        "STM32F103xB"             // 👈【必须匹配】你的具体芯片型号（关键！）
+      ],
+      "compilerPath": "D:\\software\\armgcc\\bin\\arm-none-eabi-gcc.exe",  // 👈【必须修改】ARM GCC 编译器路径
+      "cStandard": "c17",
+      "cppStandard": "gnu++17",
+      "intelliSenseMode": "gcc-arm"  // 👈【推荐保留】针对 ARM GCC 的模式
+    }
+  ],
+  "version": 4
+}
