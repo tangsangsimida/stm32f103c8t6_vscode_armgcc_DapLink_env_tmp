@@ -3,7 +3,7 @@
 set(USER_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/Application/inc
     ${CMAKE_CURRENT_SOURCE_DIR}/Peripherals/inc
-    $<TARGET_PROPERTY:stm32cubemx,INTERFACE_INCLUDE_DIRECTORIES>  # ✅ 自动从 CubeMX 获取头文件路径
+    $<TARGET_PROPERTY:stm32cubemx,INTERFACE_INCLUDE_DIRECTORIES>  # 👈自动从 CubeMX 获取头文件路径
 )
 
 # 👈自动收集 Application/Src 下的所有 .c 源文件
